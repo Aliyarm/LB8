@@ -21,36 +21,36 @@ namespace LB8
         {
             dataGridView1.RowCount = 9; // Кол-во строк
             dataGridView1.ColumnCount = 9; // Кол-во столбцов
+            dataGridView2.RowCount = dataGridView1.RowCount;
+            dataGridView2.ColumnCount = dataGridView1.ColumnCount;
             int[,] a = new int[9, 9]; // Инициализируем массив
             int i, j;
-            // Заполняем матрицу случайными числами
-            Random rand = new Random();
-            for (i = 0; i < 9; i++)
-                for (j = 0; j < 9; j++)
-                    a[i, j] = rand.Next(-100, 100);
-            // Выводим матрицу в dataGridView1
-            for (i = 0; i < 9; i++)
-                for (j = 0; j < 9; j++)
-                    dataGridView1.Rows[i].Cells[j].Value = a[i, j].ToString();
-            // Поиск максимального элемента
-            // на дополнительной диагонали
-            int m = int.MaxValue;
+            // Заполняем матрицу случайными числами и выводим её в dataGridView1
+            Random rand = new();
             for (i = 0; i < 9; i++)
             {
-                if (a[i, 8 - i] > m) m = a[i, 8 - i];
+                for (j = 0; j < 9; j++)
+                {
+                    a[i, j] = rand.Next(-100, 100);
+                    dataGridView1.Rows[i].Cells[j].Value = a[i, j].ToString();
+                }
             }
-            // выводим результат
+            // Поиск минимального элемента на каждой строке
+            int m = int.MinValue;
             textBox1.Text = Convert.ToString(m);
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
+            int n = 0;
+            for (i = 0; i < 9; i++)
+            {
+                for (j = 0; j < 9; j++)
+                {
+                    if (a[i, j] < m)
+                    {
+                        a[i, j] = n;
+                        m = a[i, j];
+                        dataGridView2.Rows[i].Cells[j].Value = a[i, j].ToString();
+                    }
+                }
+            }
         }
     }
 }
